@@ -62,7 +62,10 @@ var saveNote = function(note){
     }
 };
 
-//
+//BONUS DELETE
+var handleNoteDelete = function(event) {
+    event.stopPropagation();
+
 
 var note = $(this)
     .parent(".list-group-item")
@@ -71,6 +74,12 @@ var note = $(this)
 if(activeNote.id === noted.id) {
     activeNote = {};
 }
+
+deleteNote(note.id).then(function(){
+getAndRenderNotes();
+renderActiveNote();
+});
+};
 
 //sets the note and displays it
 
