@@ -33,7 +33,65 @@ var saveNote = function(note){
         $saveNotebtn.hide();
 
         if(activeNote.id) {
-            $noteTitle.attr("readonly", true)
+            $noteTitle.attr("readonly", true);
+            $noteText.attr("readonly", true);
+            $noteTitle.val(activeNote.title);
+            $noteText.value(activeNote.text);
+        } else {
+            $noteTitle.attr("readonly", false);
+            $noteText.atrr("readonly", false);
+            $noteTitle.val("");
+            $noteText.val("");
+
         }
+    };
+
+    //Get the note data and save it to the db and then updates
+    var handleNoteSave = function() {
+        var newNote ={
+            title: $noteTitle.val(),
+            text: $noteText.val()
+        };
+
+
+
+        saveNote(newNote).then(function(data) {
+            getAndRenderNotes();
+            renderActiveNote();
+        });
     }
+};
+
+//
+
+var note = $(this)
+    .parent(".list-group-item")
+    .data();
+
+if(activeNote.id === noted.id) {
+    activeNote = {};
 }
+
+//sets the note and displays it
+
+var handleNoteView = function() {
+    activeNote = $(this).data();
+    renderActiveNote();
+};
+
+//allows the user to add a new note
+var handleNoteView = function() {
+    activeNote = {};
+    renderActiveNote();
+};
+
+//shows or hides the button depending if the note title or text is empty
+var handleRenderSaveBtn = function() {
+    if (!$noteTitle.val().trim() || !$noteText.val().trim()){
+        $saveNotebtn.hide();
+    } else {
+        $saveNotebtn.show();
+    }
+};
+
+
