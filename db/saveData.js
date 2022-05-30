@@ -2,8 +2,8 @@
 const express = require('express');
 
 //connects them to the right routes
-const apiRoutes = require('./routes/apiRoutes');
-const htmlRoutes = require('./routes/htmlRoutes');
+const apiRoutes = require('../routes/apiRoutes');
+const htmlRoutes = require('../routes/htmlRoutes');
 
 // Create an express server
 const app = express();
