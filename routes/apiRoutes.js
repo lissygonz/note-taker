@@ -7,7 +7,7 @@ router.get('/notes', function (req, res){
     saveData
     .retrieveNotes()
     .then(notes => res.json(notes))
-    .catch(err => res.status(400).json(err));
+    .catch(err => res.status(500).json(err));
 });
 
 //POST
@@ -19,7 +19,7 @@ router.post('/notes', (req, res) => {
 });
 
 //BONUS DELETE
-router.delete('/notes/:id', function(req, res){
+router.delete('/notes/:id', function (req, res){
     saveData
     .deleteNote(req.params.id)
     .then(() => res.json({ok:true}))

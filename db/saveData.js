@@ -1,55 +1,28 @@
-//Dependencies
+// Dependencies
+const express = require('express');
 
-const util = require('util');
-const fs = require('fs');
-const { v4: uuidv4} = require('uuid');
+//connects them to the right routes
+const apiRoutes = require('./routes/apiRoutes');
+const htmlRoutes = require('./routes/htmlRoutes');
 
-const readNote = util.promisify(fs.readFile);
-const writeNote = util.promisify(fs.writeFile);
+// Create an express server
+const app = express();
 
-class Save {
-    write(note) {
-        return writeNote('db/db.json', JSON.stringify(note));
-    }
+// Set PORT
+const PORT = process.env.PORT || 3001;
 
-read() {
-    return readNote('db/db.json', 'utf8');
-}
-retrieveNotes() {
-    return this.read().then(notes => {
-        let parsedNotes;
-        try {
-            parsedNotes = [].concat(JSON.parse(notes));
-        } catch (err) {
-            parsedNotes = [];
-        }
-        return parsedNotes;
-    });
-}
-
-addNote(note) {
-    const {title, text} = note;
-    if (!title || !text) {
-        throw new Error('Both title and text can not be blank')
-    }
-
-    //Use UUID package to add unqiue IDs
-    const newNote = { title, text , id: uuidv4() };
-
-    return this.retrieveNotes()
-    .then(notes => [...notes, newNote])
-    .then(updatedNotes => this.wrtie(updatedNotes))
-    .then(() => newNote);
-}
+// Parse incoming string or array data
+app.use(express.urlencoded({ extended: true }));
 
 
-//delete note function BONUS
+app.use(express.json());
 
-deleteNote(id) {
-    return this.retrieveNotes()
-    .then(notes => notes.filter(note => note.id !== id))
-    .then(filteredNotes => this.write(filteredNotes));
-}
-}
 
-module.exports = new Save();
+app.use(express.static('public'));
+app.use('/api', apiRoutes);
+app.use('/', htmlRoutes);
+
+// Listener
+app.listen(PORT, () => {
+    console.log(`API server is ready on port ${PORT}!`);
+});
