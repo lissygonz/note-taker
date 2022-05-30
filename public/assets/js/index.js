@@ -115,3 +115,20 @@ var renderNoteList = function(notes) {
 
     $noteList.append(noteListItems);
 };
+
+//get notes and puts them to the side bar
+
+var getAndRenderNotes = function() {
+    return getNotes().then(function(data){
+        renderNoteList(data);
+    });
+};
+
+$saveNotebtn.on("click", handleNoteSave);
+$noteList.on("click", ".list-group-item", handleNoteView);
+$newNoteBtn.on("click", handleNoteView);
+$noteTitle.on("keyup", handleRenderSaveBtn);
+$noteText.om("keyup", handleRenderSaveBtn);
+
+//displauys the initial list of notes
+getAndRenderNotes();
